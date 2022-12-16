@@ -8,7 +8,6 @@ import glob
 import sys
 
 dataFolder = str(sys.argv[1])
-#print(glob.glob("testdata/*.wav"))
 fNames = glob.glob(dataFolder+"/*.wav")
 for name in fNames :
     samplerate, data = wavfile.read(name)
