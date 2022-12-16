@@ -3,13 +3,14 @@
 # This is to convert a .wav into spectrogram
 from scipy.io import wavfile
 from scipy import signal
+from tqdm import tqdm
 import matplotlib.pyplot as plt
 import glob
 import sys
 
 dataFolder = str(sys.argv[1])
 fNames = glob.glob(dataFolder+"/*.wav")
-for name in fNames :
+for name in tqdm(fNames) :
     samplerate, data = wavfile.read(name)
     N = len(data)
 
