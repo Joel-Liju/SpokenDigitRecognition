@@ -1,3 +1,6 @@
 scipy
 matplotlib
 numpy
+tqdm
+glob
+sys
