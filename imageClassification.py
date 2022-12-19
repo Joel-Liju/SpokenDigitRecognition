@@ -9,22 +9,14 @@ batch_size = 32
 img_height = 128
 img_width = 192
 
-train_ds = tf.keras.utils.image_dataset_from_directory(
+train_ds, val_ds = tf.keras.utils.image_dataset_from_directory(
   "dataset",
   validation_split=0.2,
-  subset="training",
+  subset="both",
   seed=123,
   image_size=(img_height, img_width),
   batch_size=batch_size)
-
-val_ds = tf.keras.utils.image_dataset_from_directory(
-  "dataset",
-  validation_split=0.2,
-  subset="validation",
-  seed=123,
-  image_size=(img_height, img_width),
-  batch_size=batch_size)
-
+  
 class_names = train_ds.class_names
 print(class_names)
 
