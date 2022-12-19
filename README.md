@@ -13,3 +13,9 @@ which will install all the required files, and any test data that you use, pleas
 * test data
 
 folder. As we don't want to populate the github with data.
+
+---wav2spec---
+This program converts all .wav files within a provided path into spectrogram .png images.
+The images are formated (no whitespace, axis) to be provided to image AI. 
+To run wav2spec.py:
+python wav2spec.py folderContainingWavs
