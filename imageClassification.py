@@ -6,8 +6,8 @@ from keras import layers
 from keras.models import Sequential
 
 batch_size = 32
-img_height = 369
-img_width = 496
+img_height = 128
+img_width = 192
 
 train_ds = tf.keras.utils.image_dataset_from_directory(
   "dataset",

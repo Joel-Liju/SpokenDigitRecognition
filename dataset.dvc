@@ -1,5 +1,5 @@
 outs:
-- md5: a286569a9a8ce27d39064e75a07482ff.dir
-  size: 25165159
-  nfiles: 3000
+- md5: 5f12004fae842e5c67272432094f8acd.dir
+  size: 11794297
+  nfiles: 3002
   path: dataset
