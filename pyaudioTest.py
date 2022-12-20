@@ -12,13 +12,12 @@ def record(duration=3, fs=8000):
     nsamples = duration*fs
     p = pyaudio.PyAudio()
     stream = p.open(format=pyaudio.paInt16, channels=1, rate=fs, input=True,
-                    frames_per_buffer=nsamples)
+                    frames_per_buffer=nsamples, input_device_index=2)
     buffer = stream.read(nsamples)
     array = np.frombuffer(buffer, dtype='int16')
     stream.stop_stream()
     stream.close()
     p.terminate()
-    print(array)
     return array
 
 
@@ -31,4 +30,3 @@ def sound(array, fs=8000):
     stream.close()
     p.terminate()
 
-test = record()
