@@ -10,7 +10,7 @@ However, the only necessary step for this part is to run the command.
 > pip install -r requirements.txt
 
 which will install all the required files, and any test data that you use, please make sure you put it in the 
-* test data
+* testdata
 
 folder. As we don't want to populate the github with data.
 
@@ -19,3 +19,12 @@ This program converts all .wav files within a provided path into spectrogram .pn
 The images are formated (no whitespace, axis) to be provided to image AI. 
 To run wav2spec.py:
 python wav2spec.py folderContainingWavs
+
+Few of the libraies we are using include:-
+* [pyaudio](https://people.csail.mit.edu/hubert/pyaudio/)
+* [Tensorflow](https://www.tensorflow.org/api_docs/python/tf)
+* [scipy](https://docs.scipy.org/doc/scipy/)
+* [matplotlib](https://matplotlib.org/)
+* [tqdm](https://tqdm.github.io/)
+
+
