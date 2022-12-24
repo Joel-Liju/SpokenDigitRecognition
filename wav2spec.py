@@ -10,7 +10,7 @@ import sys
 
 dataFolder = str(sys.argv[1])
 outputFolder = str(sys.argv[2])
-fNames = glob.glob(dataFolder+"/*.wav")
+fNames = glob.glob(dataFolder+"/**/*.wav", recursive=True)
 for name in tqdm(fNames) :
     samplerate, data = wavfile.read(name)
     N = len(data)
@@ -32,6 +32,7 @@ for name in tqdm(fNames) :
 
     #Saving the spectrogram as a png
     arr = name.split('.')
-    directory,filename = arr[0].split('\\')
+    arr2 = arr[0].split('\\')
+    filename = arr2[len(arr2)-1]
     figure.savefig(outputFolder + '\\' + filename + ".png", bbox_inches="tight", pad_inches = 0)
     plt.close(figure)
