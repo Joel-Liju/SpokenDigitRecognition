@@ -53,6 +53,8 @@ def run():
     global directory
     global model
     global filename
+    if filename == "":
+        filename = "dummy"
     # samplerate, data = wavfile.read(filename)
     f, t, Sxx = signal.spectrogram(data, samplerate)
 
@@ -77,7 +79,7 @@ def run():
     #directory,name = arr[0].split('/')
     arr = arr[0].split('/')
     name = arr[len(arr)-1]
-    imgName = directory + '/' + name + ".png"
+    imgName = "testdata/" + name + ".png"
     figure.savefig(imgName, bbox_inches="tight", pad_inches = 0)
     plt.close(figure)
     print("done with spectrogram")
