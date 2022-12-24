@@ -6,3 +6,4 @@ recordings/
 /model
 data/
 .png
+__pycache__/

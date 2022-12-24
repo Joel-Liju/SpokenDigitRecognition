@@ -3,6 +3,7 @@ import tensorflow as tf
 from tensorflow import keras
 import glob
 import sys
+import pyaudioTest
 import matplotlib.pyplot as plt
 from scipy.io import wavfile
 from scipy import signal
@@ -11,6 +12,9 @@ from tkinter import *
 from tkinter import filedialog as fd
 from PIL import ImageTk, Image
 import os
+
+data = []
+samplerate = 44100
 model = keras.models.load_model("model")
 
 # create the root window
@@ -36,14 +40,20 @@ def select_file():
         b.config(text=name)
 
     if filename != "": 
-        btn1["state"] = "enable"
-    else: btn1["state"] = "disabled"
+        runModel["state"] = "enabled"
+        global samplerate,data
+        samplerate,data = wavfile.read(filename)
+        selectAudio["state"] = "disabled"
+        playButton["state"] = "enabled"
+    else: 
+        runModel["state"] = "disabled"
 
 def run():
-    global filename
+    global samplerate,data
     global directory
     global model
-    samplerate, data = wavfile.read(filename)
+    global filename
+    # samplerate, data = wavfile.read(filename)
     f, t, Sxx = signal.spectrogram(data, samplerate)
 
     img_height = 128
@@ -94,20 +104,63 @@ a.grid(row = 0, column = 0)
 b = Label(window ,text = "")
 b.grid(row = 0,column = 1)
 
-btn = ttk.Button(
+selectAudio = ttk.Button(
     window,
     text='Select Audio',
     command=select_file
     )
-btn.grid(row=1, column=0)
+selectAudio.grid(row=1, column=0)
 
-btn1 = ttk.Button(
+runModel = ttk.Button(
     window,
     text='Run',
-    command=run
+    command=run,
+    state= "disabled"
     )
-btn1.grid(row=1, column=1)
-btn1["state"] = "disabled"
+runModel.grid(row=1, column=1)
+
+def recorder():
+    global data
+    data = pyaudioTest.record()
+    playButton["state"] = "enabled"
+    clearButton["state"] = "enabled"
+    recordButton["state"] = "disabled"
+    selectAudio["state"] = "disabled"
+    runModel["state"] = "enabled"
+recordButton = ttk.Button(
+    window,
+    text="Record",
+    command= recorder
+)
+recordButton.grid(row=1,column=2)
+
+def play():
+    global data
+    pyaudioTest.sound(data)
+playButton = ttk.Button(
+    window,
+    text="Play recorded",
+    command= play,
+    state="disabled"
+)
+playButton.grid(row=1,column=3)
+
+
+def clearer():
+    global data
+    data = []
+    clearButton["state"] = "disabled"
+    recordButton["state"] = "enabled"
+    playButton["state"] = "disabled"
+    selectAudio["state"] = "enabled"
+    
+clearButton = ttk.Button(
+    window,
+    text="Clear",
+    command= clearer,
+    state="disabled"
+)
+clearButton.grid(row=1,column=4)
 
 c = Label(window)
 c.grid(row=2, columnspan=2)
