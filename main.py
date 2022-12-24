@@ -7,16 +7,17 @@ import matplotlib.pyplot as plt
 from scipy.io import wavfile
 from scipy import signal
 from tkinter import ttk
-from tkinter.ttk import Progressbar
 from tkinter import *
 from tkinter import filedialog as fd
+from PIL import ImageTk, Image
 import os
+model = keras.models.load_model("model")
 
 # create the root window
 window = Tk()
 window.title('Digit Recognition AI')
 window.resizable(True, True)
-window.geometry('300x400')
+window.geometry('500x400')
 
 filename = ""
 directory = os.getcwd()
@@ -40,13 +41,17 @@ def select_file():
 
 def run():
     global filename
-    pbar.start()
+    global directory
+    global model
     samplerate, data = wavfile.read(filename)
     f, t, Sxx = signal.spectrogram(data, samplerate)
 
+    img_height = 128
+    img_width = 192
+
     # Set the size of the image
     figure = plt.figure()
-    figure.set_size_inches(192/figure.get_dpi(), 128/figure.get_dpi()) # convert pixels to inches
+    figure.set_size_inches(img_width/figure.get_dpi(), img_height/figure.get_dpi()) # convert pixels to inches
 
     # remove the axis and set the margins
     axes = plt.Axes(figure, [0., 0., 1., 1.])
@@ -59,18 +64,20 @@ def run():
     #Saving the spectrogram as a png
     arr = filename.split('.')
     print(arr)
-    directory,name = arr[0].split('\\')
-    figure.savefig(directory + '\\' + name + ".png", bbox_inches="tight", pad_inches = 0)
+    #directory,name = arr[0].split('/')
+    arr = arr[0].split('/')
+    name = arr[len(arr)-1]
+    imgName = directory + '/' + name + ".png"
+    figure.savefig(imgName, bbox_inches="tight", pad_inches = 0)
     plt.close(figure)
     print("done with spectrogram")
-
-    model = keras.models.load_model("model")
-
-    img_height = 128
-    img_width = 192
+    
     img = tf.keras.utils.load_img(
-        directory + '\\' + name + ".png", target_size=(img_height, img_width)
+        imgName, target_size=(img_height, img_width)
     )
+    lblImg = ImageTk.PhotoImage(Image.open(imgName))
+    d.configure(image=lblImg)
+    d.image = lblImg
 
     print("done loading")
     img_array = tf.keras.utils.img_to_array(img)
@@ -78,8 +85,8 @@ def run():
 
     predictions = model.predict(img_array)
     score = tf.nn.softmax(predictions[0])
-
-    pbar.stop()
+    c.config(text="This image most likely belongs to {} with a {:.2f} percent confidence."
+                    .format([int(x) for x in range(10)][np.argmax(score)], 100 * np.max(score)))
     return
 
 a = Label(window ,text = "File: ")
@@ -102,8 +109,10 @@ btn1 = ttk.Button(
 btn1.grid(row=1, column=1)
 btn1["state"] = "disabled"
 
-pbar = Progressbar(window, orient=HORIZONTAL, length=200, mode="indeterminate",takefocus=True)
+c = Label(window)
+c.grid(row=2, columnspan=2)
 
+d = Label(window)
+d.grid(row=3)
 
-# run the application
 window.mainloop()
