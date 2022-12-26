@@ -13,7 +13,7 @@ def record(duration=1, fs=44100):
     nsamples = int(nsamples)
     p = pyaudio.PyAudio()
     stream = p.open(format=pyaudio.paInt16, channels=1, rate=fs, input=True,
-                    frames_per_buffer=nsamples, input_device_index=2)
+                    frames_per_buffer=nsamples)
     buffer = stream.read(nsamples)
     array = np.frombuffer(buffer, dtype='int16')
     stream.stop_stream()

@@ -100,7 +100,6 @@ def run():
     c.config(text="This image most likely belongs to {} with a {:.2f} percent confidence."
                     .format([int(x) for x in range(10)][np.argmax(score)], 100 * np.max(score)))
     return
-
 a = Label(window ,text = "File: ")
 a.grid(row = 0, column = 0)
 b = Label(window ,text = "")
