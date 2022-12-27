@@ -48,3 +48,8 @@ Where you need to pull the dvc model from our drive. However, if this is not pos
 
 ## How does it work.
 It works using the idea of image recognition, where we trained the model using spectrograms for different numbers from 0 - 9 and then when we analyze audio, we convert that into spectrogram and feed it through the classifier and then present the result.
+
+## how to use the software.
+
+So there are a few ways which you can add audio to test, first you can select a .wav file from your compute which is about 1 second long. Or you can record your own voice then run it through the model. 
+So make sure you update the sample rate appropriately, as if not things might not work as expected. We mostly use 44100 Hz as a default, but feel free to test that out as well.
