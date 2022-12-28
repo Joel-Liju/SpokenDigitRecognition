@@ -20,7 +20,7 @@ model = keras.models.load_model("model")
 window = Tk()
 window.title('Digit Recognition AI')
 window.resizable(True, True)
-window.geometry('500x400')
+window.geometry('700x400')
 
 
 samplerate = IntVar()
@@ -125,19 +125,32 @@ runModel = ttk.Button(
 runModel.grid(row=1, column=1)
 
 def recorder():
-    global data
-    data = pyaudioTest.record(fs=samplerate.get())
-    playButton["state"] = "enabled"
-    clearButton["state"] = "enabled"
+    pyaudioTest.record(fs=samplerate.get())
+    stopButton["state"] = "enabled"
     recordButton["state"] = "disabled"
     selectAudio["state"] = "disabled"
-    runModel["state"] = "enabled"
+    
 recordButton = ttk.Button(
     window,
     text="Record",
     command= recorder
 )
 recordButton.grid(row=1,column=2)
+
+def stop_recorder():
+    global data
+    data = pyaudioTest.stop_record(fs=samplerate.get())
+    playButton["state"] = "enabled"
+    clearButton["state"] = "enabled"
+    runModel["state"] = "enabled"
+
+stopButton = ttk.Button(
+    window,
+    text="Stop",
+    command= stop_recorder,
+    state= "disabled"
+)
+stopButton.grid(row=1,column=3)
 
 def play():
     global data
@@ -148,7 +161,7 @@ playButton = ttk.Button(
     command= play,
     state="disabled"
 )
-playButton.grid(row=1,column=3)
+playButton.grid(row=1,column=4)
 
 
 def clearer():
@@ -165,7 +178,7 @@ clearButton = ttk.Button(
     command= clearer,
     state="disabled"
 )
-clearButton.grid(row=1,column=4)
+clearButton.grid(row=1,column=5)
     
 samplerateBox = tk.Entry(window)
 
@@ -180,9 +193,9 @@ def on_focus(event):
 
 samplerateBox.bind("<FocusIn>", on_focus)
 
-samplerateBox.grid(row=1,column=7)
+samplerateBox.grid(row=1,column=8)
 t = Label(window, textvariable=samplerate)
-t.grid(row=2, column=7)
+t.grid(row=2, column=8)
 
 def updatesamplerate():
     samplerate.set(samplerateBox.get())
