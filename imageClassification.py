@@ -13,12 +13,11 @@ train_ds, val_ds = tf.keras.utils.image_dataset_from_directory(
   "dataset",
   validation_split=0.2,
   subset="both",
-  seed=123,
+  seed= 271,
   image_size=(img_height, img_width),
   batch_size=batch_size)
   
 class_names = train_ds.class_names
-print(class_names)
 
 # Setup prefetch
 AUTOTUNE = tf.data.AUTOTUNE
@@ -46,7 +45,7 @@ model.compile(optimizer='adam',
 
 model.summary()
 
-epochs=10
+epochs=20
 history = model.fit(
   train_ds,
   validation_data=val_ds,
