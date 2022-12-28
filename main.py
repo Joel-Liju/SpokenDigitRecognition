@@ -1,10 +1,9 @@
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
-import glob
-import sys
 import pyaudioTest
 import matplotlib.pyplot as plt
+import tkinter as tk
 from scipy.io import wavfile
 from scipy import signal
 from tkinter import ttk
@@ -48,7 +47,6 @@ def select_file():
         global data
         sampleratelocal,data = wavfile.read(filename)
         samplerateBox.delete(0,100)
-        # samplerateBox.insert(0,sampleratelocal)
         samplerate.set(sampleratelocal)
         selectAudio["state"] = "disabled"
         playButton["state"] = "enabled"
@@ -83,7 +81,6 @@ def run():
 
     #Saving the spectrogram as a png
     arr = filename.split('.')
-    #directory,name = arr[0].split('/')
     arr = arr[0].split('/')
     name = arr[len(arr)-1]
     imgName = "testdata/" + name + ".png"
@@ -170,12 +167,22 @@ clearButton = ttk.Button(
 )
 clearButton.grid(row=1,column=4)
     
-samplerateBox = Entry(window)
-# samplerateBox.pack()
+samplerateBox = tk.Entry(window)
+
+# Provide hint for user
+samplerateBox.insert(0, "New sample rate")
+samplerateBox.configure(fg="gray")
+
+# Clear Entry when clicked
+def on_focus(event):
+    samplerateBox.delete(0, tk.END)
+    samplerateBox.configure(fg="black")
+
+samplerateBox.bind("<FocusIn>", on_focus)
+
 samplerateBox.grid(row=1,column=7)
 t = Label(window, textvariable=samplerate)
 t.grid(row=2, column=7)
-
 
 def updatesamplerate():
     samplerate.set(samplerateBox.get())
