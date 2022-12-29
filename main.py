@@ -1,7 +1,6 @@
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
-import pyaudioTest
 import matplotlib.pyplot as plt
 import tkinter as tk
 from scipy.io import wavfile
@@ -210,12 +209,29 @@ stopRecording = ttk.Button(text="Stop recording", command=stop_recording)
 stopRecording.grid(row=1,column=3)
 stopRecording.config(state="disabled")
 
+# This method plays back the recoded auio to the user
+def sound(array, fs=44100):
+    """
+    parameters:
+        array -> this array contains the samples for the recorded audio using the buffer above.
+        fs -> this is the sampling rate which is defaulted to 44100 samples per second.
+
+    this function, takes the Pyaudio class, and then opens a stream and writes it onto the buffer, whcih then will be played 
+    through the default Audio player.
+    """
+    p = pyaudio.PyAudio()
+    stream = p.open(format=pyaudio.paInt16, channels=len(array.shape), rate=fs, output=True)
+    stream.write(array.tobytes())
+    stream.stop_stream()
+    stream.close()
+    p.terminate()
+
 def play():
     """
     this function takes the data which contains the samples from the audio, and then plays it.
     """
     global data
-    pyaudioTest.sound(data,fs=samplerate.get())
+    sound(data,fs=samplerate.get())
 playButton = ttk.Button(
     window,
     text="Play recorded",
