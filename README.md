@@ -60,5 +60,5 @@ To run wav2spec.py:
 
 ### Pipeline
 If you wanted to test the AI though the command line on existing .wav files you can use pipline.py
-To run:
+To run:  
 `python pipeline.py inputFileName outputFolderForSpectrogram`
