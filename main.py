@@ -25,7 +25,7 @@ window.geometry('700x400')
 
 # changeable sample rate
 samplerate = IntVar()
-samplerate.set(44100)
+samplerate.set(8000)
 # PyAudio configurations
 CHUNK = 1024
 FORMAT = pyaudio.paInt16
