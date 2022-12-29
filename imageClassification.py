@@ -40,10 +40,6 @@ model = Sequential([
   layers.Dense(num_classes)
 ])
 
-model.compile(optimizer='adam',
-              loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-              metrics=['accuracy'])
-
 model.summary()
 
 model.compile(optimizer='adam',
