@@ -56,6 +56,8 @@ def select_file():
         samplerate.set(sampleratelocal)
         selectAudio["state"] = "disabled"
         playButton["state"] = "enabled"
+        clearButton["state"] = "enabled"
+        startRecording["state"] = "disabled"
     else: 
         runButton["state"] = "disabled"
 
@@ -171,7 +173,7 @@ def record_loop():
     p.terminate()
     global data
     data = np.frombuffer(buffer, dtype='int16')
-    data = data[:-int(samplerate.get()*0.07)]
+    data = data[:-int(samplerate.get()*0.1)]
 
 
 def stop_recording():
@@ -241,6 +243,7 @@ t = Label(window, textvariable=samplerate)
 t.grid(row=2, column=8)
 
 def updatesamplerate():
+    playButton["state"] = "disabled"
     samplerate.set(samplerateBox.get())
 
 updatebutton = ttk.Button(

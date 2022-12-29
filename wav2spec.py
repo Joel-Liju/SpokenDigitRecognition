@@ -13,10 +13,8 @@ outputFolder = str(sys.argv[2])
 fNames = glob.glob(dataFolder+"/**/*.wav", recursive=True)
 for name in tqdm(fNames) :
     samplerate, data = wavfile.read(name)
-    N = len(data)
 
     f, t, Sxx = signal.spectrogram(data, samplerate)
-    #plt.pcolormesh(t, f, Sxx, shading='gouraud')
 
     # Set the size of the image
     figure = plt.figure()
