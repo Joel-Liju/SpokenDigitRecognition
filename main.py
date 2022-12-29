@@ -36,8 +36,8 @@ directory = os.getcwd()
 
 def select_file():
     """
-    This function opens the file explorer, and then you are able to select a wav file which contains the recording of the number being said.
-
+    This function opens the file explorer, 
+    and then you are able to select a wav file which contains the recording of the number being said.
     """
     global filename
     choosen = fd.askopenfilename(
@@ -66,7 +66,8 @@ def select_file():
 
 def run():
     """
-    this function takes the data which is the samples for the audio file, then runs the machine learning model on the image, and then predicts what number it might be.
+    this function takes the data which is the samples for the audio file, 
+    then runs the machine learning model on the image, and then predicts what number it might be.
     """
     global samplerate,data
     global directory
@@ -138,8 +139,6 @@ runButton = ttk.Button(
     )
 runButton.grid(row=1, column=1)
 
-
-
 # Create a flag to control the recording loop
 window.recording = False
 
@@ -188,7 +187,6 @@ def record_loop():
     data = np.frombuffer(buffer, dtype='int16')
     data = data[:-int(samplerate.get()*0.1)]
 
-
 def stop_recording():
     # Set the flag to stop the recording loop
     window.recording = False
@@ -198,8 +196,6 @@ def stop_recording():
     playButton["state"] = "enabled"
     runButton["state"] = "enabled"
     
-    
-
 # Create the start button
 startRecording = ttk.Button(text="Start recording", command=start_recording)
 startRecording.grid(row=1,column=2)
@@ -232,6 +228,7 @@ def play():
     """
     global data
     sound(data,fs=samplerate.get())
+
 playButton = ttk.Button(
     window,
     text="Play recorded",
@@ -239,7 +236,6 @@ playButton = ttk.Button(
     state="disabled"
 )
 playButton.grid(row=1,column=4)
-
 
 def clearer():
     """
@@ -294,7 +290,5 @@ c.grid(row=2, columnspan=2)
 
 d = Label(window)
 d.grid(row=3)
-
-
 
 window.mainloop()
