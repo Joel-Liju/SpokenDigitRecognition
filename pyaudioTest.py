@@ -6,33 +6,36 @@ import time
 import numpy as np
 from scipy.io import wavfile
 import pyaudio
+import collections
 
+BUFFER_SIZE = 1024
 p = pyaudio.PyAudio()
 
-def record(fs=44100):
+def record(recording, fs=44100):
     # Open new audio input stream
     global stream
-    stream = p.open(format=pyaudio.paInt16, channels=1, rate=fs, input=True,
-                    frames_per_buffer=1024)
-    stream.start_stream()
+    global buffer
+    buffer = []
+    stream = p.open(format=pyaudio.paInt16, channels=1, rate=fs, input=True, frames_per_buffer=BUFFER_SIZE)
+    #stream.start_stream()
+    # Continuously record audio from the stream and save it to the buffer
+    while True:
+        # Read from the stream
+        data = stream.read(BUFFER_SIZE)
+        # Convert the data to a NumPy array
+        audio_data = np.frombuffer(data, dtype=np.int16)
+        # Add the audio data to the buffer
+        buffer.extend(audio_data)
+        if len(buffer) >= (fs*3) or not recording:
+            stream.stop_stream()
+            stream.close()
+            p.terminate()
+            break
+        
 
-def stop_record(fs=44100):
-    # Stop the stream
-    stream.stop_stream()
-
-    # Determine the total time of recording 
-    latency = stream.get_input_latency() 
-
-    # Calculate the total number of frames in the stream
-    num_frames = int(latency * fs)
-
-    # Get all frames in one call
-    buffer = stream.read(num_frames)
-
-    # Save data and free resources 
-    array = np.frombuffer(buffer, dtype='int16')
-    stream.close()
-    p.terminate()
+def stop_record():
+    # Save data
+    array = np.asarray(buffer, dtype='int16')
     return array
 
 # This method plays back the recoded auio to the user

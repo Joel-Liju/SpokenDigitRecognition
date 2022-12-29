@@ -11,6 +11,8 @@ from tkinter import *
 from tkinter import filedialog as fd
 from PIL import ImageTk, Image
 import os
+import threading
+import pyaudio
 
 data = []
 
@@ -22,9 +24,13 @@ window.title('Digit Recognition AI')
 window.resizable(True, True)
 window.geometry('700x400')
 
-
+# changeable sample rate
 samplerate = IntVar()
 samplerate.set(44100)
+# PyAudio configurations
+CHUNK = 1024
+FORMAT = pyaudio.paInt16
+CHANNELS = 1
 
 filename = ""
 directory = os.getcwd()
@@ -43,7 +49,7 @@ def select_file():
         b.config(text=name)
 
     if filename != "": 
-        runModel["state"] = "enabled"
+        runButton["state"] = "enabled"
         global data
         sampleratelocal,data = wavfile.read(filename)
         samplerateBox.delete(0,100)
@@ -51,7 +57,7 @@ def select_file():
         selectAudio["state"] = "disabled"
         playButton["state"] = "enabled"
     else: 
-        runModel["state"] = "disabled"
+        runButton["state"] = "disabled"
 
 def run():
     global samplerate,data
@@ -116,41 +122,77 @@ selectAudio = ttk.Button(
     )
 selectAudio.grid(row=1, column=0)
 
-runModel = ttk.Button(
+runButton = ttk.Button(
     window,
     text='Run',
     command=run,
     state= "disabled"
     )
-runModel.grid(row=1, column=1)
+runButton.grid(row=1, column=1)
 
-def recorder():
-    pyaudioTest.record(fs=samplerate.get())
-    stopButton["state"] = "enabled"
-    recordButton["state"] = "disabled"
+
+
+# Create a flag to control the recording loop
+window.recording = False
+
+def start_recording():
+    # Enable the stop button
+    stopRecording["state"] = "enabled"
+    startRecording["state"] = "disabled"
     selectAudio["state"] = "disabled"
+    runButton["state"] = "disabled"
+    window.recording = True
+    # Create a thread to run the recording loop
+    recording_thread = threading.Thread(target=record_loop)
+    recording_thread.start()
+
+def record_loop():
+    # Create a buffer to store the recorded audio
+    buffer = bytes()
     
-recordButton = ttk.Button(
-    window,
-    text="Record",
-    command= recorder
-)
-recordButton.grid(row=1,column=2)
+    # Create a PyAudio object
+    p = pyaudio.PyAudio()
 
-def stop_recorder():
+    # Open a stream to record audio
+    stream = p.open(format=FORMAT,
+                    channels=CHANNELS,
+                    rate=samplerate.get(),
+                    input=True,
+                    frames_per_buffer=CHUNK)
+
+    # Start recording audio
+    while True:
+        buffer = buffer + stream.read(CHUNK)
+        if not window.recording:
+            break
+    # Close the stream and PyAudio object
+    stream.stop_stream()
+    stream.close()
+    p.terminate()
     global data
-    data = pyaudioTest.stop_record(fs=samplerate.get())
-    playButton["state"] = "enabled"
-    clearButton["state"] = "enabled"
-    runModel["state"] = "enabled"
+    data = np.frombuffer(buffer, dtype='int16')
+    data = data[:-int(samplerate.get()*0.07)]
 
-stopButton = ttk.Button(
-    window,
-    text="Stop",
-    command= stop_recorder,
-    state= "disabled"
-)
-stopButton.grid(row=1,column=3)
+
+def stop_recording():
+    # Set the flag to stop the recording loop
+    window.recording = False
+    # Disable the stop button and re-enable other buttons
+    stopRecording["state"] = "disabled"
+    clearButton["state"] = "enabled"
+    playButton["state"] = "enabled"
+    runButton["state"] = "enabled"
+    
+    
+
+# Create the start button
+startRecording = ttk.Button(text="Start recording", command=start_recording)
+startRecording.grid(row=1,column=2)
+
+# Create the stop button
+stopRecording = ttk.Button(text="Stop recording", command=stop_recording)
+stopRecording.grid(row=1,column=3)
+stopRecording.config(state="disabled")
 
 def play():
     global data
@@ -168,9 +210,10 @@ def clearer():
     global data
     data = []
     clearButton["state"] = "disabled"
-    recordButton["state"] = "enabled"
+    startRecording["state"] = "enabled"
     playButton["state"] = "disabled"
     selectAudio["state"] = "enabled"
+    runButton["state"] = "disabled"
     
 clearButton = ttk.Button(
     window,
