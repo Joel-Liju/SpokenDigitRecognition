@@ -16,7 +16,7 @@ import pyaudio
 
 data = []
 
-model = keras.models.load_model("model")
+model = keras.models.load_model("model") # this model is pulled from the model folder, which is the parameters for the neural network.
 
 # create the root window
 window = Tk()
@@ -36,6 +36,10 @@ filename = ""
 directory = os.getcwd()
 
 def select_file():
+    """
+    This function opens the file explorer, and then you are able to select a wav file which contains the recording of the number being said.
+
+    """
     global filename
     choosen = fd.askopenfilename(
         title='Select Audio',
@@ -62,6 +66,9 @@ def select_file():
         runButton["state"] = "disabled"
 
 def run():
+    """
+    this function takes the data which is the samples for the audio file, then runs the machine learning model on the image, and then predicts what number it might be.
+    """
     global samplerate,data
     global directory
     global model
@@ -138,6 +145,9 @@ runButton.grid(row=1, column=1)
 window.recording = False
 
 def start_recording():
+    """
+    this function using a thread, starts recording the audio into a buffer.
+    """
     # Enable the stop button
     stopRecording["state"] = "enabled"
     startRecording["state"] = "disabled"
@@ -149,6 +159,10 @@ def start_recording():
     recording_thread.start()
 
 def record_loop():
+    """
+    this function uses a buffer and puts the recorded audio into the buffer, which is then put into the variable data.
+    This can be used by other functions to perform their tasks such as play function from the pyaudioTest. 
+    """
     # Create a buffer to store the recorded audio
     buffer = bytes()
     
@@ -197,6 +211,9 @@ stopRecording.grid(row=1,column=3)
 stopRecording.config(state="disabled")
 
 def play():
+    """
+    this function takes the data which contains the samples from the audio, and then plays it.
+    """
     global data
     pyaudioTest.sound(data,fs=samplerate.get())
 playButton = ttk.Button(
@@ -209,6 +226,9 @@ playButton.grid(row=1,column=4)
 
 
 def clearer():
+    """
+    this function clears the audio data buffer.
+    """
     global data
     data = []
     clearButton["state"] = "disabled"
