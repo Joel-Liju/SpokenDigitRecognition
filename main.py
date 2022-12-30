@@ -220,8 +220,9 @@ def clearer():
     """
     this function clears the audio data buffer.
     """
-    global data
+    global data,filename
     data = []
+    filename = ""
     clearButton["state"] = "disabled"
     startRecording["state"] = "enabled"
     playButton["state"] = "disabled"

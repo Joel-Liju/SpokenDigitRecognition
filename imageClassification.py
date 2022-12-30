@@ -26,17 +26,34 @@ train_ds = train_ds.cache().shuffle(1000).prefetch(buffer_size=AUTOTUNE)
 num_classes = len(class_names)
 
 model = Sequential([
-  layers.Rescaling(1./255, input_shape=(ANS.HEIGHT, ANS.WIDTH, ANS.CHANNELS)),
-  layers.Conv2D(16, 3, padding='same', activation='relu'),
-  layers.MaxPooling2D(),
-  layers.Conv2D(32, 3, padding='same', activation='relu'),
-  layers.MaxPooling2D(),
-  layers.Conv2D(64, 3, padding='same', activation='relu'),
-  layers.MaxPooling2D(),
-  layers.Conv2D(128, 3, padding='same', activation='relu'),
-  layers.MaxPooling2D(),
-  layers.Flatten(),
-  layers.Dense(num_classes) # Classification Layer
+  layers.Rescaling(1./255, input_shape=(ANS.HEIGHT, ANS.WIDTH, ANS.CHANNELS)),  # Normalization Layer
+  layers.Conv2D(filters=96, kernel_size=(11,11), strides=4, activation='relu'), # 11x11 Kernel, Stride 4
+  
+  layers.MaxPooling2D(pool_size=(3,3),strides=2),                               # 3x3 MaxPool, Stride 2
+  
+  layers.ZeroPadding2D(padding=(2, 2)),                                         
+  layers.Conv2D(filters=256, kernel_size=(5,5), activation='relu'),             # 5x5 Kernel, Pad 2
+
+  layers.MaxPooling2D(pool_size=(3,3),strides=2),                               # 3x3 MaxPool, Stride 2
+  
+  layers.ZeroPadding2D(padding=(1, 1)),  
+  layers.Conv2D(filters=384, kernel_size=(3,3), activation='relu'),             # 3x3 Kernel, Pad 1
+
+  layers.ZeroPadding2D(padding=(1, 1)),  
+  layers.Conv2D(filters=384, kernel_size=(3,3), activation='relu'),             # 3x3 Kernel, Pad 1
+
+  layers.ZeroPadding2D(padding=(1, 1)),  
+  layers.Conv2D(filters=256, kernel_size=(3,3), activation='relu'),             # 3x3 Kernel, Pad 1
+  
+  layers.MaxPooling2D(pool_size=(3,3),strides=2),                               # 3x3 MaxPool, Stride 2
+
+  layers.Flatten(),                                                             # flatten 2D to 1D
+
+  layers.Dense(4096, activation='relu'),                                        # 4096 Fully connected neurons
+  layers.Dropout(0.5),                                                                           
+  layers.Dense(4096, activation='relu'),                                        # 4096 Fully connected neurons
+  layers.Dropout(0.5),
+  layers.Dense(num_classes)                                                     # Classification Layer (classes)
 ])
 
 model.summary()

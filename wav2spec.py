@@ -41,3 +41,6 @@ def main():
     fNames = glob.glob(dataFolder+"/**/*.wav", recursive=True)
     for name in tqdm(fNames) :
         wav2spec(outputFolder, name)
+
+if __name__ == "__main__":
+    main()
