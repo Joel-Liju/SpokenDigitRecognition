@@ -10,7 +10,6 @@ import collections
 
 BUFFER_SIZE = 1024
 p = pyaudio.PyAudio()
-
 def record(recording, fs=44100):
     # Open new audio input stream
     global stream
@@ -40,6 +39,14 @@ def stop_record():
 
 # This method plays back the recoded auio to the user
 def sound(array, fs=44100):
+    """
+    parameters:
+        array -> this array contains the samples for the recorded audio using the buffer above.
+        fs -> this is the sampling rate which is defaulted to 44100 samples per second.
+
+    this function, takes the Pyaudio class, and then opens a stream and writes it onto the buffer, whcih then will be played 
+    through the default Audio player.
+    """
     p = pyaudio.PyAudio()
     stream = p.open(format=pyaudio.paInt16, channels=len(array.shape), rate=fs, output=True)
     stream.write(array.tobytes())
