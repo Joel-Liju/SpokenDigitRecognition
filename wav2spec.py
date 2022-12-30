@@ -8,14 +8,14 @@ import matplotlib.pyplot as plt
 import glob
 import sys
 
+
 dataFolder = str(sys.argv[1])
 outputFolder = str(sys.argv[2])
 fNames = glob.glob(dataFolder+"/**/*.wav", recursive=True)
 for name in tqdm(fNames) :
     samplerate, data = wavfile.read(name)
 
-    f, t, Sxx = signal.spectrogram(data, samplerate)
-
+    f, t, Sxx = signal.spectrogram(data, samplerate, mode = "magnitude")
     # Set the size of the image
     figure = plt.figure()
     figure.set_size_inches(192/figure.get_dpi(), 128/figure.get_dpi()) # convert pixels to inches

@@ -77,7 +77,7 @@ def run():
     if filename == "":
         filename = "dummy"
     # samplerate, data = wavfile.read(filename)
-    f, t, Sxx = signal.spectrogram(data, samplerate.get())
+    f, t, Sxx = signal.spectrogram(data, samplerate.get(), mode="magnitude")
 
     img_height = 128
     img_width = 192
