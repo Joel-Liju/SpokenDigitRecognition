@@ -14,12 +14,6 @@ which will install all the required files, and any test data that you use, pleas
 
 folder. As we don't want to populate the github with data.
 
----wav2spec---
-This program converts all .wav files within a provided path into spectrogram .png images.
-The images are formated (no whitespace, axis) to be provided to image AI. 
-To run wav2spec.py:
-python wav2spec.py folderContainingWavs
-
 Few of the libraies we are using include:-
 * [pyaudio](https://people.csail.mit.edu/hubert/pyaudio/)
 * [Tensorflow](https://www.tensorflow.org/api_docs/python/tf)
@@ -52,4 +46,18 @@ It works using the idea of image recognition, where we trained the model using s
 ## how to use the software.
 
 So there are a few ways which you can add audio to test, first you can select a .wav file from your compute which is about 1 second long. Or you can record your own voice then run it through the model. 
-So make sure you update the sample rate appropriately, as if not things might not work as expected. We mostly use 44100 Hz as a default, but feel free to test that out as well.
+So make sure you update the sample rate appropriately, as if not things might not work as expected. We mostly use 8000 Hz as a default, but feel free to test that out as well.
+
+### Main
+The main program with UI can be simply run with:  
+`python main.py`
+
+### wav2spec
+This program converts all .wav files within a provided path into spectrogram .png images.
+The images are formated (no whitespace, axis) to be provided to image AI. 
+To run wav2spec.py:  
+`python wav2spec.py folderContainingWavs outputDirectory`
+
+### Pipeline
+If you wanted to test the AI though the command line on existing .wav files you can use pipline.py:  
+`python pipeline.py inputFileName outputFolderForSpectrogram`
