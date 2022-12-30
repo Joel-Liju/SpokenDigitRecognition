@@ -1,10 +1,11 @@
 import glob
 import os
+from tqdm import tqdm
 import shutil
 dataFolder = 'dataset'
 fNames = glob.glob(dataFolder+'/*.png')
-for name in fNames:
-    print(name)
+for name in tqdm(fNames):
+    # print(name)
     directory,file = name.split('\\')
     if not os.path.isdir(directory+'/'+file[0]):
         os.mkdir(directory+'/'+file[0])
