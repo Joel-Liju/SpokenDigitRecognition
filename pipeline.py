@@ -7,42 +7,22 @@ import matplotlib.pyplot as plt
 from scipy.io import wavfile
 from scipy import signal
 import os
+from wav2spec import wav2spec
+from AlexNetSpec import AlexNetSpec as ANS 
 
 name = os.path.normpath(sys.argv[1])
 print(name)
 outputFolder = os.path.normpath(sys.argv[2])
 
-samplerate, data = wavfile.read(name)
-
-f, t, Sxx = signal.spectrogram(data, samplerate)
-#plt.pcolormesh(t, f, Sxx, shading='gouraud')
-
-# Set the size of the image
-figure = plt.figure()
-figure.set_size_inches(192/figure.get_dpi(), 128/figure.get_dpi()) # convert pixels to inches
-
-# remove the axis and set the margins
-axes = plt.Axes(figure, [0., 0., 1., 1.])
-axes.set_axis_off()
-figure.add_axes(axes)
-axes.pcolormesh(t, f, Sxx, shading='gouraud')
-axes.xaxis.set_major_locator(plt.NullLocator())
-axes.yaxis.set_major_locator(plt.NullLocator())
-
-#Saving the spectrogram as a png
-arr = name.split('.')
-print(arr)
-directory,filename = arr[0].split('\\')
-figure.savefig(outputFolder + '\\' + filename + ".png", bbox_inches="tight", pad_inches = 0)
-plt.close(figure)
+wav2spec(outputFolder, name)
 print("done with spectrogram")
-
+arr = name.split('.')
+arr = arr[0].split('\\')
+filename = arr[len(arr)-1]
 model = keras.models.load_model("model")
 
-img_height = 128
-img_width = 192
 img = tf.keras.utils.load_img(
-    outputFolder + '\\' + filename + ".png", target_size=(img_height, img_width)
+    outputFolder + '\\' + filename + ".png", target_size=(ANS.HEIGHT, ANS.WIDTH)
 )
 
 print("done loading")

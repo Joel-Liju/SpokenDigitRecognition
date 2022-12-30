@@ -2,19 +2,15 @@ import glob
 import tensorflow as tf
 from AlexNetSpec import AlexNetSpec as ANS   
 from tensorflow import keras
-from keras import layers, activations
+from keras import layers, optimizers
 from keras.models import Sequential
-
-batch_size = 32
-
 
 train_ds, val_ds = tf.keras.utils.image_dataset_from_directory(
   "dataset",
   validation_split=0.2,
   subset="both",
   seed= 271,
-  image_size=(ANS.HEIGHT, ANS.WIDTH),
-  batch_size=batch_size)
+  image_size=(ANS.HEIGHT, ANS.WIDTH))
   
 class_names = train_ds.class_names
 
@@ -60,8 +56,8 @@ model = Sequential([
 
 model.summary()
 
-model.compile(optimizer='adam',
-              loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False),
+model.compile(optimizer='sgd',
+              loss="sparse_categorical_crossentropy",
               metrics=['accuracy'])
 history = model.fit(
   train_ds,

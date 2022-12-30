@@ -14,7 +14,7 @@ def wav2spec(outputFolder, name, samplerate=0, data=[], loadWav=True):
     if loadWav :
         samplerate, data = wavfile.read(name)
 
-    f, t, Sxx = signal.spectrogram(data, samplerate)
+    f, t, Sxx = signal.spectrogram(data, samplerate, mode = "magnitude")
 
     # Set the size of the image
     figure = plt.figure()
