@@ -77,9 +77,7 @@ def run():
     global model
     global filename
     print(samplerate.get())
-    arr = filename.split('.')
-    arr2 = arr[0].split('\\')
-    name = arr2[len(arr2)-1]
+    
 
     if filename == "":
         filename = "dummy"
@@ -87,6 +85,9 @@ def run():
     else: 
         wav2spec("testdata", filename)
     
+    arr = filename.split('.')
+    arr2 = arr[0].split('\\')
+    name = arr2[len(arr2)-1]
     
     print("done with spectrogram")
     imgName = "testdata\\" + name + ".png"
