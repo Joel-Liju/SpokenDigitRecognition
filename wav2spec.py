@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import glob
 import sys
 
+
 dataFolder = str(sys.argv[1])
 outputFolder = str(sys.argv[2])
 fNames = glob.glob(dataFolder+"/**/*.wav", recursive=True)
