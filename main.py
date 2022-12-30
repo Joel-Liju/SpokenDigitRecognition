@@ -9,6 +9,8 @@ from tkinter import ttk
 from tkinter import *
 from tkinter import filedialog as fd
 from PIL import ImageTk, Image
+from AlexNetSpec import AlexNetSpec as ANS 
+from wav2spec import wav2spec
 import os
 import threading
 import pyaudio
@@ -46,8 +48,9 @@ def select_file():
         filetypes=[('WAV files', '*.wav')]) 
     if choosen != "" :
         filename = choosen
+        filename.replace('/', '\\')
         print(filename)
-        arr = filename.split('/')
+        arr = filename.split('\\')
         name = arr[len(arr)-1]
         b.config(text=name)
 
@@ -76,35 +79,11 @@ def run():
     print(samplerate.get())
     if filename == "":
         filename = "dummy"
-    # samplerate, data = wavfile.read(filename)
-    f, t, Sxx = signal.spectrogram(data, samplerate.get())
-
-    img_height = 128
-    img_width = 192
-
-    # Set the size of the image
-    figure = plt.figure()
-    figure.set_size_inches(img_width/figure.get_dpi(), img_height/figure.get_dpi()) # convert pixels to inches
-
-    # remove the axis and set the margins
-    axes = plt.Axes(figure, [0., 0., 1., 1.])
-    axes.set_axis_off()
-    figure.add_axes(axes)
-    axes.pcolormesh(t, f, Sxx, shading='gouraud')
-    axes.xaxis.set_major_locator(plt.NullLocator())
-    axes.yaxis.set_major_locator(plt.NullLocator())
-
-    #Saving the spectrogram as a png
-    arr = filename.split('.')
-    arr = arr[0].split('/')
-    name = arr[len(arr)-1]
-    imgName = "testdata/" + name + ".png"
-    figure.savefig(imgName, bbox_inches="tight", pad_inches = 0)
-    plt.close(figure)
+    wav2spec("textdata", filename, samplerate.get(), data, False)
     print("done with spectrogram")
-    
+    imgName = "testdata\\" + filename + ".png"
     img = tf.keras.utils.load_img(
-        imgName, target_size=(img_height, img_width)
+        imgName, target_size=(ANS.HEIGHT, ANS.WIDTH)
     )
     lblImg = ImageTk.PhotoImage(Image.open(imgName))
     d.configure(image=lblImg)
