@@ -37,7 +37,7 @@ model = Sequential([
   layers.Conv2D(128, 3, padding='same', activation='relu'),
   layers.MaxPooling2D(),
   layers.Flatten(),
-  layers.Dense(num_classes)
+  layers.Dense(num_classes) # Classification Layer
 ])
 
 model.summary()
