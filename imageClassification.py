@@ -62,7 +62,7 @@ model.compile(optimizer='sgd',
 history = model.fit(
   train_ds,
   validation_data=val_ds,
-  epochs=10
+  epochs=15
 )
 
 model.save('model')
