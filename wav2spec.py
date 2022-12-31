@@ -10,7 +10,6 @@ import sys
 from AlexNetSpec import AlexNetSpec as ANS 
 import os
 
-
 def wav2spec(outputFolder, name, samplerate=0, data=[], loadWav=True):
     if loadWav :
         samplerate, data = wavfile.read(name)
