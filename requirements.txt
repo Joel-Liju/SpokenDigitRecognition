@@ -4,5 +4,4 @@ numpy
 tqdm
 PyAudio
 Pillow
-tkinter
 tensorflow
