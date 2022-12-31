@@ -76,7 +76,6 @@ def run():
     global directory
     global model
     global filename
-    print(samplerate.get())
     
 
     if filename == "":
@@ -84,9 +83,12 @@ def run():
         wav2spec("testdata", filename, samplerate.get(), data, False)
     else: 
         wav2spec("testdata", filename)
+        arr = filename.split('.')
+        arr2 = arr[0].split('\\')
+        filename = arr2[len(arr2)-1]
     
     print("done with spectrogram")
-    imgName = "testdata\\" + name + ".png"
+    imgName = "testdata\\" + filename + ".png"
     img = tf.keras.utils.load_img(
         imgName, target_size=(ANS.HEIGHT, ANS.WIDTH)
     )
