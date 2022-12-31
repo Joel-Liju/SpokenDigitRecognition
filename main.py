@@ -48,7 +48,7 @@ def select_file():
         filetypes=[('WAV files', '*.wav')]) 
     if choosen != "" :
         filename = choosen
-        filename.replace('/', '\\')
+        filename = filename.replace('/', '\\')
         print(filename)
         arr = filename.split('\\')
         name = arr[len(arr)-1]
@@ -77,11 +77,20 @@ def run():
     global model
     global filename
     print(samplerate.get())
+    
+
     if filename == "":
         filename = "dummy"
-    wav2spec("testdata", filename, samplerate.get(), data, False)
+        wav2spec("testdata", filename, samplerate.get(), data, False)
+    else: 
+        wav2spec("testdata", filename)
+    
+    arr = filename.split('.')
+    arr2 = arr[0].split('\\')
+    name = arr2[len(arr2)-1]
+    
     print("done with spectrogram")
-    imgName = "testdata\\" + filename + ".png"
+    imgName = "testdata\\" + name + ".png"
     img = tf.keras.utils.load_img(
         imgName, target_size=(ANS.HEIGHT, ANS.WIDTH)
     )
@@ -223,6 +232,7 @@ def clearer():
     global data,filename
     data = []
     filename = ""
+    b.config(text="")
     clearButton["state"] = "disabled"
     startRecording["state"] = "enabled"
     playButton["state"] = "disabled"
