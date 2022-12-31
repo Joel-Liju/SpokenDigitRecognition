@@ -7,18 +7,18 @@ from tqdm import tqdm
 import matplotlib.pyplot as plt
 import glob
 import sys
+from AlexNetSpec import AlexNetSpec as ANS 
+import os
 
-
-dataFolder = str(sys.argv[1])
-outputFolder = str(sys.argv[2])
-fNames = glob.glob(dataFolder+"/**/*.wav", recursive=True)
-for name in tqdm(fNames) :
-    samplerate, data = wavfile.read(name)
+def wav2spec(outputFolder, name, samplerate=0, data=[], loadWav=True):
+    if loadWav :
+        samplerate, data = wavfile.read(name)
 
     f, t, Sxx = signal.spectrogram(data, samplerate, mode = "magnitude")
+
     # Set the size of the image
     figure = plt.figure()
-    figure.set_size_inches(192/figure.get_dpi(), 128/figure.get_dpi()) # convert pixels to inches
+    figure.set_size_inches(ANS.WIDTH/figure.get_dpi(), ANS.HEIGHT/figure.get_dpi()) # convert pixels to inches
 
     # remove the axis and set the margins
     axes = plt.Axes(figure, [0., 0., 1., 1.])
@@ -32,5 +32,17 @@ for name in tqdm(fNames) :
     arr = name.split('.')
     arr2 = arr[0].split('\\')
     filename = arr2[len(arr2)-1]
+    if not os.path.exists(outputFolder):
+        os.makedirs(outputFolder)
     figure.savefig(outputFolder + '\\' + filename + ".png", bbox_inches="tight", pad_inches = 0)
     plt.close(figure)
+   
+def main():
+    dataFolder = str(sys.argv[1])
+    outputFolder = str(sys.argv[2])
+    fNames = glob.glob(dataFolder+"/**/*.wav", recursive=True)
+    for name in tqdm(fNames) :
+        wav2spec(outputFolder, name)
+
+if __name__ == "__main__":
+    main()
