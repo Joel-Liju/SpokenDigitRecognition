@@ -299,10 +299,7 @@ The pipeline to analyze digital audio using the model goes as follows,
 
 
 
-1. 
-Select Audio
-
-
+1. Select Audio
 2. Get AI Prediction
 3. Start Recording 
 4. Stop Recording 
