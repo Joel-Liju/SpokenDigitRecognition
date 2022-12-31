@@ -79,7 +79,7 @@ def run():
     print(samplerate.get())
     if filename == "":
         filename = "dummy"
-    wav2spec("textdata", filename, samplerate.get(), data, False)
+    wav2spec("testdata", filename, samplerate.get(), data, False)
     print("done with spectrogram")
     imgName = "testdata\\" + filename + ".png"
     img = tf.keras.utils.load_img(
