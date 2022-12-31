@@ -261,7 +261,7 @@ For this project, DVC was used to share, and track the data used to train the Ne
 
 In order to be able to get the data, you have to have access to the drive which contains it. After that, you can use the command 
 
-> dvc pull -r myremote
+`dvc pull -r myremote`
 
 As this command uses the .dvc files and the .dvc folder to pull the data down for usage. 
 
@@ -272,12 +272,9 @@ The pipeline to analyze digital audio using the model goes as follows,
 
 
 
-1. 
-Get Audio Input
+1. Get Audio Input  
 
     The user chooses a .wav file or records themself speaking.
-
-
 
 2. Spectrogram 
 
@@ -287,13 +284,9 @@ Get Audio Input
 
     The model is restored from the saved directory `model`. 
 
+4. Prediction
 
-
-
-4. 
-Prediction
-
-    The spectrogram is fed through the restored model to get the most likely spoken digit and confidence of the prediction. 
+   The spectrogram is fed through the restored model to get the most likely spoken digit and confidence of the prediction. 
 
 
 # GUI
@@ -301,7 +294,7 @@ Prediction
 
 
 
-![Our GUI](/assets/images/gui.png "gui")
+![Our GUI](/assets/images/gui.jpg "gui")
 
 
 
@@ -338,13 +331,13 @@ Things to ensure are installed before running this Project are:-
 
 The best way to set this up would be to first install Python 3.11, then make a virtual environment 
 
-> python3 -m venv path/to/folder
+`python3 -m venv path/to/folder`
 
 Then once the environment is activated, you can just use `pip install -r requirement.txt` to pip install all the dependencies. 
 
 After that, you just need to run the main.py file, 
 
->python main.py
+`python main.py`
 
 However, one thing to ensure is that you have a folder called ‘model’ which contains the details about the model within it. This is a template folder structure created by Tensorflow.
 
